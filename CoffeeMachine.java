@@ -83,7 +83,6 @@ public class CoffeeMachine {
             System.out.println("Sorry, out of cups!");
             return;
         }
-
         final int additionalCups = min(water / neededWater, milk / neededMilk, coffee / neededCoffee) - neededCups;
         water -= neededWater * neededCups;
         milk -= neededMilk * neededCups;
