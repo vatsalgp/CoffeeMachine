@@ -34,7 +34,11 @@ public class CoffeeMachine {
     }
 
     static void buyCoffee() {
-        System.out.println("\nWhat do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu: ");
+        System.out.println("\nWhat do you want to buy?");
+        System.out.println("1 - espresso");
+        System.out.println("2 - latte");
+        System.out.println("3 - cappuccino");
+        System.out.println("back - to main menu");
         int neededWater = 0;
         int neededMilk = 0;
         int neededCoffee = 0;
@@ -42,7 +46,7 @@ public class CoffeeMachine {
         switch (scanner.next()) {
             case "1":
                 neededWater = 250;
-                neededMilk = 0;
+                neededMilk = 10;
                 neededCoffee = 16;
                 neededMoney = 4;
                 break;
@@ -61,15 +65,17 @@ public class CoffeeMachine {
             default:
                 return;
         }
-        if (neededWater > water) {
+        System.out.println("Please enter how many cups:");
+        int neededCups = scanner.nextInt();
+        if (neededWater * neededCups > water) {
             System.out.println("Sorry, not enough water!");
             return;
         }
-        if (neededMilk > milk) {
+        if (neededMilk * neededCups > milk) {
             System.out.println("Sorry, not enough milk!");
             return;
         }
-        if (neededCoffee > coffee) {
+        if (neededCoffee * neededCups > coffee) {
             System.out.println("Sorry, not enough coffee!");
             return;
         }
@@ -77,12 +83,18 @@ public class CoffeeMachine {
             System.out.println("Sorry, out of cups!");
             return;
         }
-        System.out.println("I have enough resources, making you a coffee!");
-        water -= neededWater;
-        milk -= neededMilk;
-        coffee -= neededCoffee;
-        cups--;
-        money += neededMoney;
+
+        int additionalCups = min(water / neededWater, milk / neededMilk, coffee / neededCoffee) - neededCups;
+        water -= neededWater * neededCups;
+        milk -= neededMilk * neededCups;
+        coffee -= neededCoffee * neededCups;
+        cups -= neededCups;
+        money += neededMoney * neededCups;
+        System.out.print("\nYes, I can make that amount of coffee");
+        if (additionalCups > 0)
+            System.out.print(" (and even " + additionalCups + " more than that)");
+        System.out.println();
+        makeCoffee();
     }
 
     static void fillCoffee() {
@@ -99,27 +111,6 @@ public class CoffeeMachine {
     static void takeCoffee() {
         System.out.println("\nI gave you $" + money);
         money = 0;
-    }
-
-    static void checkCoffee() {
-        int neededWater = 200 * cups;
-        int neededMilk = 50 * cups;
-        int neededCoffee = 15 * cups;
-        boolean adequate = false;
-        if (neededWater <= water && neededMilk <= milk && neededCoffee <= coffee) {
-            adequate = true;
-            water -= neededWater;
-            milk -= neededMilk;
-            coffee -= neededCoffee;
-        }
-        cups = min(water / 200, milk / 50, coffee / 15);
-        if (adequate) {
-            System.out.print("Yes, I can make that amount of coffee");
-            if (cups > 0)
-                System.out.print(" (and even " + cups + " more than that)");
-        } else
-            System.out.print("No, I can make only " + cups + " cup(s) of coffee");
-        System.out.println();
     }
 
     static void makeCoffee() {
