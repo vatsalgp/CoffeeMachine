@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class CoffeeMachine {
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         while (true) {
             System.out.println("Write action (buy, fill, take, remaining, exit):");
             switch (scanner.next()) {
@@ -66,7 +66,7 @@ public class CoffeeMachine {
                 return;
         }
         System.out.println("Please enter how many cups:");
-        int neededCups = scanner.nextInt();
+        final int neededCups = scanner.nextInt();
         if (neededWater * neededCups > water) {
             System.out.println("Sorry, not enough water!");
             return;
@@ -84,7 +84,7 @@ public class CoffeeMachine {
             return;
         }
 
-        int additionalCups = min(water / neededWater, milk / neededMilk, coffee / neededCoffee) - neededCups;
+        final int additionalCups = min(water / neededWater, milk / neededMilk, coffee / neededCoffee) - neededCups;
         water -= neededWater * neededCups;
         milk -= neededMilk * neededCups;
         coffee -= neededCoffee * neededCups;
@@ -123,11 +123,11 @@ public class CoffeeMachine {
         System.out.println("Coffee is ready!");
     }
 
-    static int min(int a, int b, int c) {
+    static int min(final int a, final int b, final int c) {
         return min(a, min(b, c));
     }
 
-    static int min(int a, int b) {
+    static int min(final int a, final int b) {
         return a < b ? a : b;
     }
 
