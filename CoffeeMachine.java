@@ -3,18 +3,23 @@ import java.util.Scanner;
 public class CoffeeMachine {
     public static void main(final String[] args) {
         while (true) {
-            System.out.println("Write action (buy, fill, take, remaining, exit):");
-            switch (scanner.next()) {
-                case "buy":
+            System.out.println("What do you want to do ?");
+            System.out.println("1. Buy coffee");
+            System.out.println("2. Fill ingredients");
+            System.out.println("3. Take out the money");
+            System.out.println("4. Check remaining ingredients");
+            System.out.println("5. Exit");
+            switch (getDigit()) {
+                case 1:
                     buyCoffee();
                     break;
-                case "fill":
+                case 2:
                     fillCoffee();
                     break;
-                case "take":
+                case 3:
                     takeCoffee();
                     break;
-                case "remaining":
+                case 4:
                     printCoffeeStorage();
                     break;
                 default:
@@ -26,37 +31,37 @@ public class CoffeeMachine {
 
     static void printCoffeeStorage() {
         System.out.println("\nThe coffee machine has:");
-        System.out.println(water + " of water");
-        System.out.println(milk + " of milk");
-        System.out.println(coffee + " of coffee beans");
-        System.out.println(cups + " of disposable cups");
+        System.out.println(water + "ml of water");
+        System.out.println(milk + "ml of milk");
+        System.out.println(coffee + "g of coffee beans");
+        System.out.println(cups + " disposable cups");
         System.out.println("$" + money + " of money");
     }
 
     static void buyCoffee() {
-        System.out.println("\nWhat do you want to buy?");
-        System.out.println("1 - espresso");
-        System.out.println("2 - latte");
-        System.out.println("3 - cappuccino");
-        System.out.println("back - to main menu");
         int neededWater = 0;
         int neededMilk = 0;
         int neededCoffee = 0;
         int neededMoney = 0;
-        switch (scanner.next()) {
-            case "1":
+        System.out.println("\nWhat do you want to buy?");
+        System.out.println("1. Espresso");
+        System.out.println("2. Latte");
+        System.out.println("3. Cappuccino");
+        System.out.println("4. Back to main menu");
+        switch (getDigit()) {
+            case 1:
                 neededWater = 250;
                 neededMilk = 10;
                 neededCoffee = 16;
                 neededMoney = 4;
                 break;
-            case "2":
+            case 2:
                 neededWater = 350;
                 neededMilk = 75;
                 neededCoffee = 20;
                 neededMoney = 7;
                 break;
-            case "3":
+            case 3:
                 neededWater = 200;
                 neededMilk = 100;
                 neededCoffee = 12;
@@ -65,8 +70,8 @@ public class CoffeeMachine {
             default:
                 return;
         }
-        System.out.println("Please enter how many cups:");
-        final int neededCups = scanner.nextInt();
+        System.out.println("How many cups ?");
+        final int neededCups = getInt();
         if (neededWater * neededCups > water) {
             System.out.println("Sorry, not enough water!");
             return;
@@ -83,28 +88,29 @@ public class CoffeeMachine {
             System.out.println("Sorry, out of cups!");
             return;
         }
-        final int additionalCups = min(water / neededWater, milk / neededMilk, coffee / neededCoffee) - neededCups;
+
+        final int maxCups = Math.min(Math.min(water / neededWater, milk / neededMilk), coffee / neededCoffee);
         water -= neededWater * neededCups;
         milk -= neededMilk * neededCups;
         coffee -= neededCoffee * neededCups;
         cups -= neededCups;
         money += neededMoney * neededCups;
         System.out.print("\nYes, I can make that amount of coffee");
-        if (additionalCups > 0)
-            System.out.print(" (and even " + additionalCups + " more than that)");
+        if (maxCups > neededCups)
+            System.out.print(" (and even " + (maxCups - neededCups) + " more than that)");
         System.out.println();
         makeCoffee();
     }
 
     static void fillCoffee() {
-        System.out.println("\nWrite how many ml of water do you want to add:");
-        water += scanner.nextInt();
-        System.out.println("Write how many ml of milk do you want to add:");
-        milk += scanner.nextInt();
-        System.out.println("Write how many grams of coffee beans do you want to add:");
-        coffee += scanner.nextInt();
-        System.out.println("Write how many cups of coffee do you want to add:");
-        cups += scanner.nextInt();
+        System.out.println("\nHow many ml of water do you want to add ?");
+        water += getInt();
+        System.out.println("How many ml of milk do you want to add ?");
+        milk += getInt();
+        System.out.println("How many grams of coffee beans do you want to add ?");
+        coffee += getInt();
+        System.out.println("How many cups of coffee do you want to add ?");
+        cups += getInt();
     }
 
     static void takeCoffee() {
@@ -122,12 +128,28 @@ public class CoffeeMachine {
         System.out.println("Coffee is ready!");
     }
 
-    static int min(final int a, final int b, final int c) {
-        return min(a, min(b, c));
+    static int getDigit() {
+        while (true) {
+            System.out.print(": ");
+            final String string = scanner.nextLine();
+            if (string.length() > 0) {
+                final char ch = string.charAt(0);
+                if (Character.isDigit(ch))
+                    return Character.getNumericValue(ch);
+            }
+        }
     }
 
-    static int min(final int a, final int b) {
-        return a < b ? a : b;
+    static int getInt() {
+        while (true) {
+            System.out.print(": ");
+            final String[] words = scanner.nextLine().split(" ");
+            if (words.length > 0) {
+                final String firstWord = words[0];
+                if (firstWord.matches("[0-9]+"))
+                    return Integer.parseInt(firstWord);
+            }
+        }
     }
 
     static int water = 400;
