@@ -2,7 +2,8 @@ import java.util.Scanner;
 
 public class CoffeeMachine {
     public static void main(final String[] args) {
-        while (true) {
+        boolean active = true;
+        while (active) {
             System.out.println("What do you want to do ?");
             System.out.println("1. Buy coffee");
             System.out.println("2. Fill ingredients");
@@ -23,7 +24,7 @@ public class CoffeeMachine {
                     printCoffeeStorage();
                     break;
                 default:
-                    System.exit(1);
+                    active = false;
             }
             System.out.println();
         }
@@ -43,7 +44,7 @@ public class CoffeeMachine {
         int neededMilk = 0;
         int neededCoffee = 0;
         int neededMoney = 0;
-        System.out.println("\nWhat do you want to buy?");
+        System.out.println("\nWhat do you want to buy ?");
         System.out.println("1. Espresso");
         System.out.println("2. Latte");
         System.out.println("3. Cappuccino");
