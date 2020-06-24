@@ -1,34 +1,14 @@
+package coffeemachine;
+
 import java.util.Scanner;
 
-public class CoffeeMachine {
-    public static void main(final String[] args) {
-        boolean active = true;
-        while (active) {
-            System.out.println("What do you want to do ?");
-            System.out.println("1. Buy coffee");
-            System.out.println("2. Fill ingredients");
-            System.out.println("3. Take out the money");
-            System.out.println("4. Check remaining ingredients");
-            System.out.println("5. Exit");
-            switch (getDigit()) {
-                case 1:
-                    buyCoffee();
-                    break;
-                case 2:
-                    fillCoffee();
-                    break;
-                case 3:
-                    takeCoffee();
-                    break;
-                case 4:
-                    printCoffeeStorage();
-                    break;
-                default:
-                    active = false;
-            }
-            System.out.println();
-        }
-    }
+class CoffeeMachine {
+    final static Scanner scanner = new Scanner(System.in);
+    static int water = 400;
+    static int milk = 540;
+    static int coffee = 120;
+    static int cups = 9;
+    static int money = 550;
 
     static void printCoffeeStorage() {
         System.out.println("\nThe coffee machine has:");
@@ -119,7 +99,7 @@ public class CoffeeMachine {
         money = 0;
     }
 
-    static void makeCoffee() {
+    private static void makeCoffee() {
         System.out.println("Starting to make a coffee");
         System.out.println("Grinding coffee beans");
         System.out.println("Boiling water");
@@ -141,7 +121,7 @@ public class CoffeeMachine {
         }
     }
 
-    static int getInt() {
+    private static int getInt() {
         while (true) {
             System.out.print(": ");
             final String[] words = scanner.nextLine().split(" ");
@@ -152,11 +132,4 @@ public class CoffeeMachine {
             }
         }
     }
-
-    static int water = 400;
-    static int milk = 540;
-    static int coffee = 120;
-    static int cups = 9;
-    static int money = 550;
-    final static Scanner scanner = new Scanner(System.in);
 }
